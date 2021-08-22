@@ -1,0 +1,28 @@
+<?php
+
+namespace {namespace};
+
+use Codememory\Components\Event\Interfaces\ListenerInterface;
+use {eventNamespace};
+
+/**
+ * Class {className}
+ *
+ * @package {namespace}
+ */
+class {className} implements ListenerInterface
+{
+
+    /**
+     * @param {eventName} $event
+     *
+     * @return void
+     */
+    public function {handleMethod}({eventName} $event): void
+    {
+
+        // TODO:
+
+    }
+
+}

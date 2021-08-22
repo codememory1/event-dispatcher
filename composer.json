@@ -1,0 +1,31 @@
+{
+    "name": "codememory/event-dispatcher",
+    "description": "di",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Danil",
+            "email": "kostynd1@gmail.com"
+        }
+    ],
+    "require": {
+        "codememory/config": "^1.1",
+        "codememory/console": "^1.0",
+        "codememory/finder": "^1.1",
+        "codememory/fs": "^1.1",
+        "codememory/global-config": "^1.1",
+        "codememory/support": "^1.2",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Codememory\\Components\\Event\\": ""
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.3"
+    }
+}

@@ -1,0 +1,11 @@
+{
+  "event-dispatcher": {
+    "configName": "event",
+    "pathWithEvents": "Events",
+    "eventNamespace": "Events",
+    "eventSuffix": "Event",
+    "pathWithListeners": "Listeners",
+    "listenerNamespace": "Listeners",
+    "listenerSuffix": "Listener"
+  }
+}

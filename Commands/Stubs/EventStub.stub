@@ -1,0 +1,36 @@
+<?php
+
+namespace {namespace};
+
+use Codememory\Components\Event\Interfaces\EventInterface;
+use {listenerNamespace};
+
+/**
+ * Class {className}
+ *
+ * @package {namespace}
+ */
+class {className} implements EventInterface
+{
+
+    /**
+     * {className} Construct
+     */
+    public function __construct()
+    {
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getListeners(): array
+    {
+
+        return [
+            {listenerName}::class
+        ];
+
+    }
+
+}
