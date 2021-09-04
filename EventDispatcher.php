@@ -90,6 +90,9 @@ class EventDispatcher implements EventDispatcherInterface
     /**
      * @inheritDoc
      * @throws EventNotExistException
+     * @throws Exceptions\ListenerAddedException
+     * @throws Exceptions\ListenerNotExistException
+     * @throws Exceptions\ListenerNotImplementInterfaceException
      * @throws ReflectionException
      */
     public function getEventListeners(string $eventName): array
