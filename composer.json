@@ -18,8 +18,7 @@
         "codememory/global-config": "^1.1",
         "codememory/profiling": "^2.2",
         "codememory/support": "^1.2",
-        "phpunit/phpunit": "^9.5",
-        "spatie/backtrace": "^1.2"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
