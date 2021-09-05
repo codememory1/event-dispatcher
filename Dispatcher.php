@@ -2,8 +2,6 @@
 
 namespace Codememory\Components\Event;
 
-use Codememory\Components\DateTime\DateTime;
-use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Event\Interfaces\EventDataInterface;
 use Codememory\Components\Event\Interfaces\ListenerInterface;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
@@ -11,8 +9,9 @@ use Codememory\Components\Profiling\ReportCreators\EventsReportCreator;
 use Codememory\Components\Profiling\Resource;
 use Codememory\Components\Profiling\Sections\Builders\EventsBuilder;
 use Codememory\Components\Profiling\Sections\EventsSection;
-use Codememory\Support\Str;
 use ReflectionException;
+use Spatie\Backtrace\Backtrace;
+use Spatie\Backtrace\Frame;
 
 /**
  * Class Dispatcher
@@ -28,14 +27,12 @@ class Dispatcher
      * @param EventDataInterface $event
      *
      * @throws BuilderNotCurrentSectionException
-     * @throws InvalidTimezoneException
      * @throws ReflectionException
      */
     public function dispatch(EventDataInterface $event): void
     {
 
         $microTime = microtime(true);
-        $backtrace = debug_backtrace();
 
         /** @var ListenerInterface|callable $listener */
         foreach ($event->getListeners() as $listener) {
@@ -50,20 +47,19 @@ class Dispatcher
             }
         }
 
-        $this->profiling($event, $microTime, $this->getStackByClassName($backtrace[0], $backtrace));
+        $this->profiling($event, $microTime, Backtrace::create()->frames()[1]);
 
     }
 
     /**
      * @param EventDataInterface $event
      * @param float              $microTime
-     * @param array              $stack
+     * @param Frame              $stack
      *
      * @return void
-     * @throws InvalidTimezoneException
      * @throws BuilderNotCurrentSectionException
      */
-    private function profiling(EventDataInterface $event, float $microTime, array $stack): void
+    private function profiling(EventDataInterface $event, float $microTime, Frame $stack): void
     {
 
         $eventsReportCreator = new EventsReportCreator(null, new EventsSection(new Resource()));
@@ -74,33 +70,10 @@ class Dispatcher
             ->setListeners(array_map(function (callable|string $listener) {
                 return is_callable($listener) ? 'callback' : $listener;
             }, $event->getListeners()))
-            ->setDemanded($stack['class'], $stack['method'])
-            ->setCompleted((new DateTime())->format('Y-m-d H:i:s'))
+            ->setDemanded($stack->class, $stack->method)
             ->setLeadTime(round((microtime(true) - $microTime) * 1000));
 
         $eventsReportCreator->create($eventsBuilder);
-
-    }
-
-    /**
-     * @param array $firstStack
-     * @param array $debugBacktrace
-     *
-     * @return array
-     */
-    private function getStackByClassName(array $firstStack, array $debugBacktrace): array
-    {
-
-        $fullFilename = Str::trimToSymbol($firstStack['file'], '/', false);
-        $filename = Str::trimAfterSymbol($fullFilename, '.', false);
-
-        foreach ($debugBacktrace as $stack) {
-            if (str_ends_with($stack['class'], $filename)) {
-                return $stack;
-            }
-        }
-
-        return [];
 
     }
 
